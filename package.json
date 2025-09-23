@@ -1,0 +1,12 @@
+{
+  "name": "@warren-bank/Android-MMS-Automatic-Forwarding",
+  "private": true,
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "@warren-bank/translate-android-strings": "^2.0.0"
+  },
+  "scripts": {
+    "translate":       "translate-android-strings -i \"en\" -f \"android-studio-project/MMS-Forwarding/src/main/res/values/strings.xml\" -d \"android-studio-project/MMS-Forwarding/src/withAllLanguageTranslations/res\" -m --na --nc --nw -b \"MMS\"",
+    "translate:debug": "npm run translate -- -o \"en\" --debug"
+  }
+}
