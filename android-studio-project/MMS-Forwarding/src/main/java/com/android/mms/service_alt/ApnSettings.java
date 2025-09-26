@@ -52,37 +52,37 @@ public class ApnSettings {
             Telephony.Carriers.MMSC,
             Telephony.Carriers.MMSPROXY,
             Telephony.Carriers.MMSPORT,
-            Telephony.Carriers.NAME,
-            Telephony.Carriers.APN,
-            Telephony.Carriers.BEARER,
-            Telephony.Carriers.PROTOCOL,
-            Telephony.Carriers.ROAMING_PROTOCOL,
-            Telephony.Carriers.AUTH_TYPE,
             Telephony.Carriers.MVNO_TYPE,
             Telephony.Carriers.MVNO_MATCH_DATA,
-            Telephony.Carriers.PROXY,
-            Telephony.Carriers.PORT,
-            Telephony.Carriers.SERVER,
-            Telephony.Carriers.USER,
-            Telephony.Carriers.PASSWORD,
+            Telephony.Carriers.APN,
+//          Telephony.Carriers.NAME,
+//          Telephony.Carriers.BEARER,
+//          Telephony.Carriers.PROTOCOL,
+//          Telephony.Carriers.ROAMING_PROTOCOL,
+//          Telephony.Carriers.AUTH_TYPE,
+//          Telephony.Carriers.PROXY,
+//          Telephony.Carriers.PORT,
+//          Telephony.Carriers.SERVER,
+//          Telephony.Carriers.USER,
+//          Telephony.Carriers.PASSWORD,
     };
-    private static final int COLUMN_TYPE         = 0;
-    private static final int COLUMN_MMSC         = 1;
-    private static final int COLUMN_MMSPROXY     = 2;
-    private static final int COLUMN_MMSPORT      = 3;
-    private static final int COLUMN_NAME         = 4;
-    private static final int COLUMN_APN          = 5;
-    private static final int COLUMN_BEARER       = 6;
-    private static final int COLUMN_PROTOCOL     = 7;
-    private static final int COLUMN_ROAMING_PROTOCOL = 8;
-    private static final int COLUMN_AUTH_TYPE    = 9;
-    private static final int COLUMN_MVNO_TYPE    = 10;
-    private static final int COLUMN_MVNO_MATCH_DATA = 11;
-    private static final int COLUMN_PROXY        = 12;
-    private static final int COLUMN_PORT         = 13;
-    private static final int COLUMN_SERVER       = 14;
-    private static final int COLUMN_USER         = 15;
-    private static final int COLUMN_PASSWORD     = 16;
+    private static final int COLUMN_TYPE             = 0;
+    private static final int COLUMN_MMSC             = 1;
+    private static final int COLUMN_MMSPROXY         = 2;
+    private static final int COLUMN_MMSPORT          = 3;
+    private static final int COLUMN_MVNO_TYPE        = 4;
+    private static final int COLUMN_MVNO_MATCH_DATA  = 5;
+    private static final int COLUMN_APN              = 6;
+//  private static final int COLUMN_NAME             = 7;
+//  private static final int COLUMN_BEARER           = 8;
+//  private static final int COLUMN_PROTOCOL         = 9;
+//  private static final int COLUMN_ROAMING_PROTOCOL = 10;
+//  private static final int COLUMN_AUTH_TYPE        = 11;
+//  private static final int COLUMN_PROXY            = 12;
+//  private static final int COLUMN_PORT             = 13;
+//  private static final int COLUMN_SERVER           = 14;
+//  private static final int COLUMN_USER             = 15;
+//  private static final int COLUMN_PASSWORD         = 16;
 
 
     /**
