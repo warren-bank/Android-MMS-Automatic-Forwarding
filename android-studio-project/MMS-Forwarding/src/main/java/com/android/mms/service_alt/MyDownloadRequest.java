@@ -14,7 +14,7 @@ import com.google.android.mms.pdu_alt.RetrieveConf;
 /**
  * Request to download an MMS
  */
-public class MyDownloadRequest extends MyBaseRequest {
+public class MyDownloadRequest extends ModifiedMmsRequest {
 
     public static interface ResponseListener {
         public void onResponse(Context context, RetrieveConf pdu);

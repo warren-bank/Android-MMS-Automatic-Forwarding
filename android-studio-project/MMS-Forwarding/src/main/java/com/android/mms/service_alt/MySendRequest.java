@@ -11,7 +11,7 @@ import com.android.mms.service_alt.exception.MmsHttpException;
 /**
  * Request to send an MMS
  */
-public class MySendRequest extends MyBaseRequest {
+public class MySendRequest extends ModifiedMmsRequest {
 
     private final String mLocationUrl;
     private final byte[] mPduData;
@@ -20,7 +20,7 @@ public class MySendRequest extends MyBaseRequest {
         super(requestManager, subId, creator, configOverrides);
 
         this.mLocationUrl = locationUrl;
-        this.mPduData = requestManager.readPduFromContentUri(null, 0);
+        this.mPduData = requestManager.getPdu();
     }
 
     @Override

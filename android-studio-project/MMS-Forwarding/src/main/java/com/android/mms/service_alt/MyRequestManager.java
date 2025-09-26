@@ -2,7 +2,7 @@ package com.android.mms.service_alt;
 
 import android.net.Uri;
 
-public class MyRequestManager implements MmsRequest.RequestManager {
+public class MyRequestManager implements ModifiedMmsRequest.RequestManager {
     private byte[] pduData;
 
     public MyRequestManager() {
@@ -14,21 +14,7 @@ public class MyRequestManager implements MmsRequest.RequestManager {
     }
 
     @Override
-    public void addSimRequest(MmsRequest request) {
-    }
-
-    @Override
-    public boolean getAutoPersistingPref() {
-        return false;
-    }
-
-    @Override
-    public byte[] readPduFromContentUri(Uri contentUri, int maxSize) {
+    public byte[] getPdu() {
         return pduData;
-    }
-
-    @Override
-    public boolean writePduToContentUri(Uri contentUri, byte[] response) {
-        return false;
     }
 }

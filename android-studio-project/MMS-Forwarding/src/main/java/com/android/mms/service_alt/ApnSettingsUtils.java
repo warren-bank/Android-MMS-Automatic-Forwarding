@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2015 Jacob Klinker
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.android.mms.service_alt;
 
 import android.content.Context;
@@ -32,20 +16,8 @@ import com.android.mms.service_alt.exception.ApnException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-/**
- * APN settings used for MMS transactions
- */
-public class ApnSettings {
+public class ApnSettingsUtils {
     private static final String TAG = "ApnSettings";
-
-    // MMSC URL
-    private final String mServiceCenter;
-    // MMSC proxy address
-    private final String mProxyAddress;
-    // MMSC proxy port
-    private final int mProxyPort;
-    // Debug text for this APN: a concatenation of interesting columns of this APN
-    private final String mDebugText;
 
     private static final String[] APN_PROJECTION = {
             Telephony.Carriers.TYPE,
@@ -191,29 +163,6 @@ public class ApnSettings {
         return value != null ? value.trim() : null;
     }
 
-    public ApnSettings(String mmscUrl, String proxyAddr, int proxyPort, String debugText) {
-        mServiceCenter = mmscUrl;
-        mProxyAddress = proxyAddr;
-        mProxyPort = proxyPort;
-        mDebugText = debugText;
-   }
-
-    public String getMmscUrl() {
-        return mServiceCenter;
-    }
-
-    public String getProxyAddress() {
-        return mProxyAddress;
-    }
-
-    public int getProxyPort() {
-        return mProxyPort;
-    }
-
-    public boolean isProxySet() {
-        return !TextUtils.isEmpty(mProxyAddress);
-    }
-
     private static boolean isValidApnType(String types, String requestType) {
         // If APN type is unspecified, assume APN_TYPE_ALL.
         if (TextUtils.isEmpty(types)) {
@@ -234,9 +183,5 @@ public class ApnSettings {
         } else {
             return Integer.parseInt(port);
         }
-    }
-
-    public String toString() {
-        return mDebugText;
     }
 }

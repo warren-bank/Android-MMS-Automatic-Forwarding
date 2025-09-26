@@ -39,42 +39,16 @@ import com.android.mms.service_alt.exception.MmsHttpException;
 /**
  * Base class for MMS requests. This has the common logic of sending/downloading MMS.
  */
-public abstract class MmsRequest {
+public abstract class ModifiedMmsRequest {
     private static final String TAG = "MmsRequest";
-
+    private static final boolean mmsOverWifiEnabled = true;
     private static final int RETRY_TIMES = 3;
 
     /**
      * Interface for certain functionalities from MmsService
      */
     public static interface RequestManager {
-        /**
-         * Enqueue an MMS request
-         *
-         * @param request the request to enqueue
-         */
-        public void addSimRequest(MmsRequest request);
-
-        /*
-         * @return Whether to auto persist received MMS
-         */
-        public boolean getAutoPersistingPref();
-
-        /**
-         * Read pdu (up to maxSize bytes) from supplied content uri
-         * @param contentUri content uri from which to read
-         * @param maxSize maximum number of bytes to read
-         * @return read pdu (else null in case of error or too big)
-         */
-        public byte[] readPduFromContentUri(final Uri contentUri, final int maxSize);
-
-        /**
-         * Write pdu to supplied content uri
-         * @param contentUri content uri to which bytes should be written
-         * @param pdu pdu bytes to write
-         * @return true in case of success (else false)
-         */
-        public boolean writePduToContentUri(final Uri contentUri, final byte[] pdu);
+        public byte[] getPdu();
     }
 
     // The reference to the pending requests manager (i.e. the MmsService)
@@ -83,15 +57,12 @@ public abstract class MmsRequest {
     protected int mSubId;
     // The creator app
     protected String mCreator;
-    // MMS config
-    protected MmsConfig.Overridden mMmsConfig;
     // MMS config overrides
     protected Bundle mMmsConfigOverrides;
+    // MMS config
+    protected MmsConfig.Overridden mMmsConfig;
 
-    private boolean mobileDataEnabled;
-
-    public MmsRequest(RequestManager requestManager, int subId, String creator,
-            Bundle configOverrides) {
+    public ModifiedMmsRequest(RequestManager requestManager, int subId, String creator, Bundle configOverrides) {
         mRequestManager = requestManager;
         mSubId = subId;
         mCreator = creator;
@@ -153,7 +124,7 @@ public abstract class MmsRequest {
             wifi.setWifiEnabled(false);
         }
 
-        mobileDataEnabled = Utils.isMobileDataEnabled(context);
+        boolean mobileDataEnabled = Utils.isMobileDataEnabled(context);
         Log.v(TAG, "mobile data enabled: " + mobileDataEnabled);
 
         if (!mobileDataEnabled && !useWifi(context)) {
@@ -189,7 +160,7 @@ public abstract class MmsRequest {
                     try {
                         ApnSettings apn = null;
                         try {
-                            apn = ApnSettings.load(context, apnName, mSubId);
+                            apn = ApnSettingsUtils.load(context, apnName, mSubId);
                         } catch (ApnException e) {
                             // If no APN could be found, fall back to trying without the APN name
                             if (apnName == null) {
@@ -198,7 +169,7 @@ public abstract class MmsRequest {
                             }
                             Log.i(TAG, "MmsRequest: No match with APN name:"
                                     + apnName + ", try with no name");
-                            apn = ApnSettings.load(context, null, mSubId);
+                            apn = ApnSettingsUtils.load(context, null, mSubId);
                         }
                         Log.i(TAG, "MmsRequest: using " + apn.toString());
                         response = doHttp(context, networkManager, apn);
@@ -293,7 +264,7 @@ public abstract class MmsRequest {
      * are we set up to use wifi? if so, send mms over it.
      */
     public static boolean useWifi(Context context) {
-        if (Utils.isMmsOverWifiEnabled(context)) {
+        if (mmsOverWifiEnabled || Utils.isMmsOverWifiEnabled(context)) {
             ConnectivityManager mConnMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             if (mConnMgr != null) {
                 NetworkInfo niWF = mConnMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -303,37 +274,6 @@ public abstract class MmsRequest {
             }
         }
         return false;
-    }
-
-    /**
-     * Returns true if sending / downloading using the carrier app has failed and completes the
-     * action using platform API's, otherwise false.
-     */
-    protected boolean maybeFallbackToRegularDelivery(int carrierMessagingAppResult) {
-        if (carrierMessagingAppResult
-                == CarrierMessagingService.SEND_STATUS_RETRY_ON_CARRIER_NETWORK
-                || carrierMessagingAppResult
-                        == CarrierMessagingService.DOWNLOAD_STATUS_RETRY_ON_CARRIER_NETWORK) {
-            Log.d(TAG, "Sending/downloading MMS by IP failed.");
-            mRequestManager.addSimRequest(MmsRequest.this);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Converts from {@code carrierMessagingAppResult} to a platform result code.
-     */
-    protected static int toSmsManagerResult(int carrierMessagingAppResult) {
-        switch (carrierMessagingAppResult) {
-            case CarrierMessagingService.SEND_STATUS_OK:
-                return Activity.RESULT_OK;
-            case CarrierMessagingService.SEND_STATUS_RETRY_ON_CARRIER_NETWORK:
-                return SmsManager.MMS_ERROR_RETRY;
-            default:
-                return SmsManager.MMS_ERROR_UNSPECIFIED;
-        }
     }
 
     /**
