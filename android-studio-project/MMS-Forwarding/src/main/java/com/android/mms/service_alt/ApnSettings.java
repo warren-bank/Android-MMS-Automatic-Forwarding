@@ -52,9 +52,9 @@ public class ApnSettings {
             Telephony.Carriers.MMSC,
             Telephony.Carriers.MMSPROXY,
             Telephony.Carriers.MMSPORT,
-            Telephony.Carriers.MVNO_TYPE,
-            Telephony.Carriers.MVNO_MATCH_DATA,
             Telephony.Carriers.APN,
+//          Telephony.Carriers.MVNO_TYPE,
+//          Telephony.Carriers.MVNO_MATCH_DATA,
 //          Telephony.Carriers.NAME,
 //          Telephony.Carriers.BEARER,
 //          Telephony.Carriers.PROTOCOL,
@@ -70,9 +70,9 @@ public class ApnSettings {
     private static final int COLUMN_MMSC             = 1;
     private static final int COLUMN_MMSPROXY         = 2;
     private static final int COLUMN_MMSPORT          = 3;
-    private static final int COLUMN_MVNO_TYPE        = 4;
-    private static final int COLUMN_MVNO_MATCH_DATA  = 5;
-    private static final int COLUMN_APN              = 6;
+    private static final int COLUMN_APN              = 4;
+//  private static final int COLUMN_MVNO_TYPE        = 5;
+//  private static final int COLUMN_MVNO_MATCH_DATA  = 6;
 //  private static final int COLUMN_NAME             = 7;
 //  private static final int COLUMN_BEARER           = 8;
 //  private static final int COLUMN_PROTOCOL         = 9;
