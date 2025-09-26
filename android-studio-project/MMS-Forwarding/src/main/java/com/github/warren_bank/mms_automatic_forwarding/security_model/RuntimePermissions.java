@@ -30,7 +30,7 @@ public final class RuntimePermissions {
     if (Build.VERSION.SDK_INT < 23)
       return true;
 
-    final String[] permissions_all = new String[]{ "android.permission.SEND_SMS", "android.permission.READ_SMS", "android.permission.WRITE_SMS", "android.permission.RECEIVE_SMS", "android.permission.RECEIVE_MMS" };
+    final String[] permissions_all = new String[]{ "android.permission.SEND_SMS", "android.permission.READ_SMS", "android.permission.WRITE_SMS", "android.permission.RECEIVE_SMS", "android.permission.RECEIVE_MMS", "android.permission.READ_PHONE_STATE" };
     final String[] permissions_req = RuntimePermissions.getMissingPermissions(activity, permissions_all);
 
     if (permissions_req == null)

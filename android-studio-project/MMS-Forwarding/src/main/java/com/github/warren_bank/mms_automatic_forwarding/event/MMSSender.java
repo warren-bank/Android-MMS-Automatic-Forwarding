@@ -1,28 +1,28 @@
 package com.github.warren_bank.mms_automatic_forwarding.event;
 
 import com.github.warren_bank.mms_automatic_forwarding.R;
+import com.github.warren_bank.mms_automatic_forwarding.data_model.Message;
 
 import com.klinker.android.send_message.Utils;
 
 import com.android.mms.dom.smil.parser.SmilXmlSerializer;
 import com.android.mms.service_alt.MmsNetworkManager;
-import com.android.mms.service_alt.MmsRequestManager;
-import com.android.mms.service_alt.SendRequest;
+import com.android.mms.service_alt.MyRequestManager;
+import com.android.mms.service_alt.MySendRequest;
 
 import com.google.android.mms.ContentType;
 import com.google.android.mms.pdu_alt.CharacterSets;
 import com.google.android.mms.pdu_alt.EncodedStringValue;
-import com.google.android.mms.pdu_alt.MultimediaMessagePdu;
 import com.google.android.mms.pdu_alt.PduBody;
 import com.google.android.mms.pdu_alt.PduComposer;
 import com.google.android.mms.pdu_alt.PduHeaders;
 import com.google.android.mms.pdu_alt.PduPart;
 import com.google.android.mms.pdu_alt.PduUtils;
+import com.google.android.mms.pdu_alt.RetrieveConf;
 import com.google.android.mms.pdu_alt.SendReq;
 import com.google.android.mms.smil.SmilHelper;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -30,16 +30,16 @@ import java.util.Arrays;
 
 public final class MMSSender {
 
-  public static void forward(Context context, ArrayList<String> recipients, String sender, String sender_contact_name, MultimediaMessagePdu pdu) {
+  public static void forward(Context context, Message msg, RetrieveConf pdu) {
     try {
       String preface = context.getString(R.string.mms_preface_heading);
-      if ((sender_contact_name != null) && !sender_contact_name.isEmpty()) {
-        preface += "\n  " + sender_contact_name;
+      if ((msg.sender_contact_name != null) && !msg.sender_contact_name.isEmpty()) {
+        preface += "\n  " + msg.sender_contact_name;
       }
-      preface += "\n  " + sender;
+      preface += "\n  " + msg.sender;
 
       EncodedStringValue[] encTo = EncodedStringValue.encodeStrings(
-        recipients.toArray(new String[0])
+        msg.recipients.toArray(new String[0])
       );
 
       EncodedStringValue encFrom = new EncodedStringValue(
@@ -57,7 +57,6 @@ public final class MMSSender {
       if ((pduBytes == null) || (pduBytes.length == 0))
         return;
 
-      update_preferences(context);
       send_MMS(context, pduBytes);
     }
     catch(Exception e) {}
@@ -125,15 +124,20 @@ public final class MMSSender {
     return pduComposer.make();
   }
 
-  private static void update_preferences(Context context) {
-    PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean("mms_over_wifi", true).commit();
-  }
-
   private static void send_MMS(Context context, byte[] pduBytes) {
-    MmsRequestManager requestManager = new MmsRequestManager(context, pduBytes);
-    SendRequest request = new SendRequest(requestManager, Utils.getDefaultSubscriptionId(), null, null, null, null, null);
-    MmsNetworkManager manager = new MmsNetworkManager(context, Utils.getDefaultSubscriptionId());
+    int subId = Utils.getDefaultSubscriptionId();
+
+    MyRequestManager requestManager = new MyRequestManager(pduBytes);
+    MmsNetworkManager manager = new MmsNetworkManager(context, subId);
+
+    MySendRequest request = new MySendRequest(
+      requestManager,
+      subId,
+      /* String creator */ null,
+      /* Bundle configOverrides */ null,
+      /* String locationUrl */ null
+    );
+
     request.execute(context, manager);
   }
-
 }
