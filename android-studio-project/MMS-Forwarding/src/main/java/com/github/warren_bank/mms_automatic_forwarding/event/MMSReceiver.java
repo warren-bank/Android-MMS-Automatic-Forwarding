@@ -68,37 +68,49 @@ public class MMSReceiver extends BroadcastReceiver implements MyDownloadRequest.
     onReceiveRetrieveConf(context, pdu);
   }
 
-  private void onReceiveNotificationInd(Context context, NotificationInd pdu) {
-    Message msg = getMessage(context, pdu, false);
-    if (msg == null) return;
+  private void onReceiveNotificationInd(final Context context, final NotificationInd pdu) {
+    // prevent: android.os.NetworkOnMainThreadException
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        Message msg = getMessage(context, pdu, false);
+        if (msg == null) return;
 
-    String locationUrl = new String(pdu.getContentLocation());
-    if ((locationUrl == null) || locationUrl.isEmpty()) return;
+        String locationUrl = new String(pdu.getContentLocation());
+        if ((locationUrl == null) || locationUrl.isEmpty()) return;
 
-    // begin download from MMS Proxy with callback
+        // begin download from MMS Proxy with callback
 
-    int subId = Utils.getDefaultSubscriptionId();
+        int subId = Utils.getDefaultSubscriptionId();
 
-    MyRequestManager requestManager = new MyRequestManager();
-    MmsNetworkManager manager = new MmsNetworkManager(context, subId);
+        MyRequestManager requestManager = new MyRequestManager();
+        MmsNetworkManager manager = new MmsNetworkManager(context, subId);
 
-    MyDownloadRequest request = new MyDownloadRequest(
-      requestManager,
-      subId,
-      /* String creator */ null,
-      /* Bundle configOverrides */ null,
-      locationUrl,
-      /* ResponseListener responseListener */ MMSReceiver.this
-    );
+        MyDownloadRequest request = new MyDownloadRequest(
+          requestManager,
+          subId,
+          /* String creator */ null,
+          /* Bundle configOverrides */ null,
+          locationUrl,
+          /* ResponseListener responseListener */ MMSReceiver.this
+        );
 
-    request.execute(context, manager);
+        request.execute(context, manager);
+      }
+    }).start();
   }
 
-  private void onReceiveRetrieveConf(Context context, RetrieveConf pdu) {
-    Message msg = getMessage(context, pdu);
-    if (msg == null) return;
+  private void onReceiveRetrieveConf(final Context context, final RetrieveConf pdu) {
+    // prevent: android.os.NetworkOnMainThreadException
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        Message msg = getMessage(context, pdu);
+        if (msg == null) return;
 
-    MMSSender.forward(context, msg, pdu);
+        MMSSender.forward(context, msg, pdu);
+      }
+    }).start();
   }
 
   private Message getMessage(Context context, GenericPdu pdu) {
