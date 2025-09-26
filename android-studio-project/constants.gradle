@@ -4,7 +4,10 @@ project.ext {
   releaseVersion     = '001.00.00-21API'
   javaVersion        = JavaVersion.VERSION_1_8
   minSdkVersion      = 21
-  targetSdkVersion   = 35
+  targetSdkVersion   = 29 // do not change
+                          // https://developer.android.com/about/versions/11/behavior-changes-11#apn-database-restrictions
+                          // https://github.com/klinker41/android-smsmms/blob/master/library/src/main/java/com/android/mms/service_alt/MmsRequest.java#L192
+                          // https://github.com/klinker41/android-smsmms/blob/master/library/src/main/java/com/android/mms/service_alt/ApnSettings.java#L117
   compileSdkVersion  = 35
   buildToolsVersion  = '34.0.0'
 }
