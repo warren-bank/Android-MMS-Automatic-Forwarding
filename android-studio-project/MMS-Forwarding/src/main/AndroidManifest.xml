@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.github.warren_bank.mms_automatic_forwarding">
+
+  <uses-feature android:name="android.hardware.telephony" required="true" />
+
+  <uses-permission android:name="android.permission.RECEIVE_MMS" />
+  <uses-permission android:name="android.permission.READ_SMS" />
+  <uses-permission android:name="android.permission.SEND_SMS" />
+
+  <application
+    android:icon="@drawable/launcher"
+    android:label="@string/app_name"
+    android:allowBackup="false">
+
+    <activity
+      android:name=".ui.RecipientListActivity"
+      android:label="@string/app_name"
+      android:theme="@style/app_theme"
+      android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
+      android:launchMode="singleTop"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <receiver
+      android:name=".event.MMSReceiver"
+      android:label="@string/app_name"
+      android:enabled="true"
+      android:exported="true">
+      <intent-filter android:priority="2147483647">
+        <action android:name="android.provider.Telephony.WAP_PUSH_RECEIVED" />
+        <data android:mimeType="application/vnd.wap.mms-message" />
+      </intent-filter>
+    </receiver>
+
+    <receiver
+      android:name=".event.MMSSender.SmsManagerReceiver"
+      android:label="@string/app_name"
+      android:enabled="true"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="com.github.warren_bank.mms_automatic_forwarding.SMS_SENT" />
+      </intent-filter>
+    </receiver>
+
+  </application>
+</manifest>

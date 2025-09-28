@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">MMS 회사연혁</string>
+  <string name="label_enable">회사 소개</string>
+  <string name="label_recipient">고객 지원:</string>
+  <string name="label_sender">Sender는 끝이어야 합니다:</string>
+  <string name="label_button_cancel">CANCEL 소개</string>
+  <string name="label_button_delete">계정 만들기</string>
+  <string name="label_button_save">제품 정보</string>
+  <string name="menu_add">사이트맵</string>
+  <string name="error_missing_required_value">오류: 필수 값</string>
+  <string name="error_add_listitem">오류 : 목록에 새 항목을 추가 할 수 없습니다</string>
+  <string name="mms_preface_heading">거래 시작:</string>
+</resources>

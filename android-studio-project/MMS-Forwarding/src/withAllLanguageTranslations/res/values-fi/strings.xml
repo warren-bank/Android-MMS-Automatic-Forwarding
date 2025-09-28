@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">MMS Lähetys</string>
+  <string name="label_enable">Käytä palvelua</string>
+  <string name="label_recipient">Vastaanottaja:</string>
+  <string name="label_sender">Lähettäjän on päätyttävä:</string>
+  <string name="label_button_cancel">CANCEL</string>
+  <string name="label_button_delete">POISTA</string>
+  <string name="label_button_save">SAVE</string>
+  <string name="menu_add">ADD</string>
+  <string name="error_missing_required_value">Virhe: puuttuva vaadittu arvo</string>
+  <string name="error_add_listitem">Virhe: Uutta kohdetta ei voitu lisätä luetteloon</string>
+  <string name="mms_preface_heading">Eteenpäin:</string>
+</resources>
