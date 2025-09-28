@@ -72,22 +72,22 @@ public class MMSReceiver extends BroadcastReceiver {
         Message msg = getMessage(context, pdu, false);
         if (msg == null) return;
 
-        String tr_id = new String(pdu.getTransactionId());
-        String ct_l  = new String(pdu.getContentLocation());
-        if (tr_id.isEmpty() || ct_l.isEmpty()) return;
-
         // begin database lookup from Telephony ContentProvider
+
+        final String timestamp = Integer.toString(
+          (int)(System.currentTimeMillis() / 1000) - 2
+        );
 
         for (int i = 0; i < MAX_TRIES; i++) {
           Cursor cursor = context.getContentResolver().query(
             Mms.Inbox.CONTENT_URI,
             new String[]{Mms._ID},
-            (Mms.TRANSACTION_ID + "=? AND " + Mms.CONTENT_LOCATION + "=?"),
-            new String[]{tr_id, ct_l},
-            null
+            (Mms.DATE + ">=?"),
+            new String[]{timestamp},
+            Mms.DEFAULT_SORT_ORDER
           );
 
-          if ((cursor != null) && (cursor.getCount() == 1) && cursor.moveToFirst()) {
+          if ((cursor != null) && (cursor.getCount() > 0) && cursor.moveToFirst()) {
             try {
               String msgId = cursor.getString(cursor.getColumnIndex(Mms._ID));
               cursor.close();

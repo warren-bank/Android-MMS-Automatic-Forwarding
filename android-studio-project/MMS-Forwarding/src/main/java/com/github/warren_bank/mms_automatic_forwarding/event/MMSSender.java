@@ -62,7 +62,7 @@ public final class MMSSender {
       PduBody    pduBody    = pdu.getBody();
 
       remove_old_SMIL_part(pduBody);
-      add_preface_TEXT_part(pduBody, preface);
+      add_preface_TEXT_part(pduBody, preface + "\n");
       add_new_SMIL_part(pduBody);
 
       byte[] pduBytes = compose_new_send_request(context, pduHeaders, pduBody, encTo, encFrom);
