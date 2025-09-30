@@ -37,6 +37,27 @@ Android app that listens for incoming MMS multimedia messages and conditionally 
     * edit field values, and save changes
     * delete
 
+#### Forwarding Rules (Advanced Usage):
+
+* `Forwarding recipient` field:
+  - supports: comma-separated list of values
+  - example:
+    * `8001190000,8002290000,8003390000`
+* `Sender must end with` field:
+  - supports: `<whitelist>!<blacklist>`
+  - where:
+    * both `<whitelist>` and `<blacklist>` are a comma-separated list of values
+    * `<whitelist>` is required
+    * `<blacklist>` is optional
+    * the character `!` denotes the start of `<blacklist>`
+  - special case:
+    * `<whitelist>` is `*`<br>&hellip;all other values in its comma-separated list are ignored
+  - examples:
+    * `8001190000,8002290000,8003390000`
+    * `*!8001190000,8002290000,8003390000`
+    * `0000!8001190000,8002290000,8003390000`
+    * `0000!90000`
+
 - - - -
 
 #### Build Flavors:
