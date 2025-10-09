@@ -75,7 +75,7 @@ public class MMSReceiver extends BroadcastReceiver {
         // begin database lookup from Telephony ContentProvider
 
         final String timestamp = Integer.toString(
-          (int)(System.currentTimeMillis() / 1000) - 2
+          (int)(System.currentTimeMillis() / 1000) - 10
         );
 
         for (int i = 0; i < MAX_TRIES; i++) {
