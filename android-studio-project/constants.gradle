@@ -1,10 +1,10 @@
 project.ext {
   applicationId      = 'com.github.warren_bank.mms_automatic_forwarding'
-  releaseVersionCode = Integer.parseInt("001030021", 10)  //Integer.MAX_VALUE == 2147483647
-  releaseVersion     = '001.03.00-21API'
+  releaseVersionCode = Integer.parseInt("001030121", 10)  //Integer.MAX_VALUE == 2147483647
+  releaseVersion     = '001.03.01-21API'
   javaVersion        = JavaVersion.VERSION_1_8
   minSdkVersion      = 21
   targetSdkVersion   = 35
   compileSdkVersion  = 35
-  buildToolsVersion  = '34.0.0'
+  buildToolsVersion  = '35.0.0'
 }
