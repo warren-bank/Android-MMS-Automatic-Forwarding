@@ -148,21 +148,21 @@ public class MMSReceiver extends BroadcastReceiver {
   }
 
   private Message getMessage(Context context, GenericPdu pdu, boolean getContactName) {
-    String sender = pdu.getFrom().getString();
-    Log.i(TAG, "MMS received.\nfrom: " + sender);
+    String sender_phone_number = pdu.getFrom().getString();
+    Log.i(TAG, "MMS received.\nfrom: " + sender_phone_number);
 
     ArrayList<RecipientListItem> listItems = Preferences.getRecipientListItems(context);
     if (listItems.isEmpty())
       return null;
 
-    ArrayList<String> recipients = RecipientListItem.match(listItems, sender);
+    ArrayList<String> recipients = RecipientListItem.match(listItems, sender_phone_number);
     if ((recipients == null) || recipients.isEmpty())
       return null;
 
     String sender_contact_name = getContactName
-      ? Contacts.getContactName(context, sender)
+      ? Contacts.getContactName(context, sender_phone_number)
       : null;
 
-    return new Message(recipients, sender, sender_contact_name);
+    return new Message(recipients, sender_phone_number, sender_contact_name);
   }
 }

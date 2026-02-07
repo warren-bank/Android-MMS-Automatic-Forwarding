@@ -2,6 +2,7 @@ package com.github.warren_bank.mms_automatic_forwarding.event;
 
 import com.github.warren_bank.mms_automatic_forwarding.R;
 import com.github.warren_bank.mms_automatic_forwarding.data_model.Message;
+import com.github.warren_bank.mms_automatic_forwarding.utils.PreferencesMgr;
 
 import com.klinker.android.send_message.Utils;
 
@@ -44,11 +45,11 @@ public final class MMSSender {
 
   public static void forward(Context context, Message msg, RetrieveConf pdu) {
     try {
-      String preface = context.getString(R.string.mms_preface_heading);
+      String sender = context.getString(R.string.mms_sender_heading);
       if (!TextUtils.isEmpty(msg.sender_contact_name)) {
-        preface += "\n  " + msg.sender_contact_name;
+        sender += "\n  " + msg.sender_contact_name;
       }
-      preface += "\n  " + msg.sender;
+      sender += "\n  " + msg.sender_phone_number;
 
       EncodedStringValue[] encTo = EncodedStringValue.encodeStrings(
         msg.recipients.toArray(new String[0])
@@ -61,8 +62,11 @@ public final class MMSSender {
       PduHeaders pduHeaders = PduUtils.getPduHeaders(pdu);
       PduBody    pduBody    = pdu.getBody();
 
+      String template = PreferencesMgr.get_template(context);
+      boolean prefix  = template.equals(context.getString(R.string.pref_template_value_prefix));
+
       remove_old_SMIL_part(pduBody);
-      add_preface_TEXT_part(pduBody, preface + "\n");
+      add_sender_TEXT_part(pduBody, sender, prefix);
       add_new_SMIL_part(pduBody);
 
       byte[] pduBytes = compose_new_send_request(context, pduHeaders, pduBody, encTo, encFrom);
@@ -90,10 +94,15 @@ public final class MMSSender {
     }
   }
 
-  private static void add_preface_TEXT_part(PduBody pduBody, String preface) {
+  private static void add_sender_TEXT_part(PduBody pduBody, String sender, boolean prefix) {
+    if (prefix)
+      sender = sender + "\n";
+    else
+      sender = "\n" + sender;
+
     byte[] name = ("fwd").getBytes();
     byte[] mime = ("text/plain").getBytes();
-    byte[] data = preface.getBytes();
+    byte[] data = sender.getBytes();
 
     PduPart pduPart = new PduPart();
     pduPart.setName(name);
@@ -103,7 +112,10 @@ public final class MMSSender {
     pduPart.setCharset(CharacterSets.UTF_8);
     pduPart.setData(data);
 
-    pduBody.addPart(0, pduPart);
+    if (prefix)
+      pduBody.addPart(0, pduPart);
+    else
+      pduBody.addPart(pduPart);
   }
 
   private static void add_new_SMIL_part(PduBody pduBody) {
